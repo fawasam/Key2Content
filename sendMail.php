@@ -19,10 +19,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Email Headers
     $headers = "MIME-Version: 1.0" . "\r\n";
     $headers .= "Content-Type: text/html; charset=UTF-8" . "\r\n";
-    $headers .= "From: Key2ContentAdvertising <noreply@k2cadv.in>" . "\r\n";
-
-
-    // Email content with HTML
+    $headers .= "From: $email " . "\r\n";
+    $recipient = "key2contentadvertising@gmail.com"; // CHANGE THIS
+    $email_subject = "New Enquiry from $name";
     $email_content = "
     <html>
     <head>
@@ -51,11 +50,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </body>
     </html>";
-
-
     if(mail($recipient, $email_subject, $email_content, $headers)) {
     http_response_code(200);
     echo "Thank You! Your message has been sent.";
+
+    header('Location: index.html?emailSent=true');
+    exit;
 } else {
     http_response_code(500);
     echo "Oops! Something went wrong and we couldn't send your message.";
