@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+
+Sitemap: https://k2cadv.in/sitemap.xml

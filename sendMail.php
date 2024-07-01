@@ -16,30 +16,50 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    // Recipient email
-    $recipient = "key2contentadvertising@gmail.com"; // CHANGE THIS
+    // Email Headers
+    $headers = "MIME-Version: 1.0" . "\r\n";
+    $headers .= "Content-Type: text/html; charset=UTF-8" . "\r\n";
+    $headers .= "From: Key2ContentAdvertising <noreply@k2cadv.in>" . "\r\n";
 
-    // Email subject
-    $email_subject = "New contact from $name";
 
-    // Email content
-    $email_content = "Name: $name\n";
-    $email_content .= "Email: $email\n\n";
-    $email_content .= "Message:\n$message\n";
+    // Email content with HTML
+    $email_content = "
+    <html>
+    <head>
+        <style>
+            body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f4f4f4; }
+            .container { background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
+            h2 { color: #333; }
+            .info { margin-bottom: 20px; }
+            .info p { margin: 0; margin-bottom: 10px; }
+            .info label { font-weight: bold; }
+        </style>
+    </head>
+    <body>
+        <div class='container'>
+            <h2>New Contact Message</h2>
+            <div class='info'>
+                <p><label>Name:</label> $name</p>
+                <p><label>Email:</label> $email</p>
+                <p><label>Phone:</label> $phone</p>
+                <p><label>Subject:</label> $subject</p>
+            </div>
+            <div class='message'>
+                <label>Message:</label>
+                <p>$message</p>
+            </div>
+        </div>
+    </body>
+    </html>";
 
-    // Email headers
-    $email_headers = "From: $name <$email>";
 
-    // Send the email
-    if (mail($recipient, $email_subject, $email_content, $email_headers)) {
-        // Success
-        http_response_code(200);
-        echo "Thank You! Your message has been sent.";
-    } else {
-        // Server error
-        http_response_code(500);
-        echo "Oops! Something went wrong, and we couldn't send your message.";
-    }
+    if(mail($recipient, $email_subject, $email_content, $headers)) {
+    http_response_code(200);
+    echo "Thank You! Your message has been sent.";
+} else {
+    http_response_code(500);
+    echo "Oops! Something went wrong and we couldn't send your message.";
+}
 } else {
     // Not a POST request
     http_response_code(403);
